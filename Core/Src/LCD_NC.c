@@ -17,7 +17,7 @@ void lcd_init(void) {
     HAL_Delay(5);
 }
 
-void lcd_send_cmd(char cmd) {
+void lcd_send_cmd(Lcd_Command_t cmd) {
     char datatosend;
 
     // send upper nibble first

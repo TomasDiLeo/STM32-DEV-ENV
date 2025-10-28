@@ -19,8 +19,26 @@
 #define D7_Pin 			GPIO_PIN_3
 #define D7_GPIO_Port 		GPIOA
 
+typedef enum {
+	HOME = 0x02,
+	DISP_OFF = 0x00,
+	DISP_ON = 0x08,
+	CUR_OFF_BLINK_OFF = 0x0C,
+	CUR_ON_BLINK_OFF = 0x0E,
+	CUR_OFF_BLINK_ON = 0x0D,
+	CUR_ON_BLINK_ON = 0x0F,
+	POS_R_DFIX = 0x06,
+	POS_L_DFIX = 0x04,
+	POS_R_CFIX = 0x07,
+	POS_L_CFIX = 0x05,
+	MOV_CUR_LEFT = 0x10,
+	MOV_CUR_RIGHT = 0x14,
+	MOV_DISP_LEFT = 0x18,
+	MOV_DISP_RIGHT = 0x1C
+} Lcd_Command_t;
+
 void lcd_init(void);
-void lcd_send_cmd(char cmd);
+void lcd_send_cmd(Lcd_Command_t cmd);
 void lcd_send_data(char data);
 void lcd_send_string(char *str);
 void lcd_put_cur(int row, int col);
