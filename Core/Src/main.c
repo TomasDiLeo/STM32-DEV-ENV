@@ -110,7 +110,34 @@ int main(void)
   {
 	  HAL_Delay(1); //STABILITY
 
+	  // LCD TEST
+
+	  lcd_put_cur(0, 0);
+	  lcd_send_data('D');
+	  HAL_Delay(20);
+	  lcd_send_cmd(MOV_DISP_RIGHT);
+	  lcd_send_cmd(MOV_DISP_RIGHT);
+	  HAL_Delay(2);
+	  lcd_send_cmd(MOV_DISP_LEFT);
+	  lcd_send_cmd(MOV_DISP_LEFT);
+
+	  HAL_Delay(20);
+
+	  lcd_send_cmd(CUR_ON_BLINK_ON);
+
+	  lcd_send_cmd(MOV_CUR_LEFT);
+	  lcd_send_cmd(MOV_CUR_LEFT);
+	  HAL_Delay(20);
+	  lcd_send_cmd(MOV_CUR_RIGHT);
+	  lcd_send_cmd(MOV_CUR_RIGHT);
+
+	  lcd_send_cmd(CUR_OFF_BLINK_OFF);
+
+	  HAL_Delay(20);
+
+
 	  //CLOCK FUNC TEST
+
 //	  lcd_put_cur(0, 0);
 //	  sprintf(string_buffer, " Fecha :%02d/%02d/%02d", datetime.date, datetime.month, datetime.year);
 //	  lcd_send_string(string_buffer);
@@ -123,47 +150,47 @@ int main(void)
 
 	  //CLOCK ERROR TEST
 
-	  status_buffer = clock_set_date(20, 2, 25);
-	  lcd_put_cur(0, 0);
-	  if (status_buffer != CLOCK_OK){
-		  sprintf(string_buffer, "Fecha Invalida cod:%2d", status_buffer);
-		  lcd_send_string(string_buffer);
-	  } else {
-		  lcd_send_string("Fecha Valida");
-	  }
-
-	  HAL_Delay(5);
-
-	  status_buffer = clock_set_date(32, 2, 25);
-	  lcd_put_cur(0, 0);
-	  if (status_buffer != CLOCK_OK){
-		  sprintf(string_buffer, "Fecha Invalida cod:%2d", status_buffer);
-		  lcd_send_string(string_buffer);
-	  } else {
-		  lcd_send_string("Fecha Valida");
-	  }
-
-	  HAL_Delay(5);
-
-	  status_buffer = clock_set_time(20, 2, 25);
-	  lcd_put_cur(0, 0);
-	  if (status_buffer != CLOCK_OK){
-		  sprintf(string_buffer, "Tiempo invalido cod:%2d", status_buffer);
-		  lcd_send_string(string_buffer);
-	  } else {
-		  lcd_send_string("Tiempo Valido");
-	  }
-
-	  HAL_Delay(5);
-
-	  status_buffer = clock_set_time(24, 2, 25);
-	  lcd_put_cur(0, 0);
-	  if (status_buffer != CLOCK_OK){
-		  sprintf(string_buffer, "Tiempo invalido cod:%2d", status_buffer);
-		  lcd_send_string(string_buffer);
-	  } else {
-		  lcd_send_string("Tiempo Valido");
-	  }
+//	  status_buffer = clock_set_date(20, 2, 25);
+//	  lcd_put_cur(0, 0);
+//	  if (status_buffer != CLOCK_OK){
+//		  sprintf(string_buffer, "Fecha Invalida cod:%2d", status_buffer);
+//		  lcd_send_string(string_buffer);
+//	  } else {
+//		  lcd_send_string("Fecha Valida");
+//	  }
+//
+//	  HAL_Delay(5);
+//
+//	  status_buffer = clock_set_date(32, 2, 25);
+//	  lcd_put_cur(0, 0);
+//	  if (status_buffer != CLOCK_OK){
+//		  sprintf(string_buffer, "Fecha Invalida cod:%2d", status_buffer);
+//		  lcd_send_string(string_buffer);
+//	  } else {
+//		  lcd_send_string("Fecha Valida");
+//	  }
+//
+//	  HAL_Delay(5);
+//
+//	  status_buffer = clock_set_time(20, 2, 25);
+//	  lcd_put_cur(0, 0);
+//	  if (status_buffer != CLOCK_OK){
+//		  sprintf(string_buffer, "Tiempo invalido cod:%2d", status_buffer);
+//		  lcd_send_string(string_buffer);
+//	  } else {
+//		  lcd_send_string("Tiempo Valido");
+//	  }
+//
+//	  HAL_Delay(5);
+//
+//	  status_buffer = clock_set_time(24, 2, 25);
+//	  lcd_put_cur(0, 0);
+//	  if (status_buffer != CLOCK_OK){
+//		  sprintf(string_buffer, "Tiempo invalido cod:%2d", status_buffer);
+//		  lcd_send_string(string_buffer);
+//	  } else {
+//		  lcd_send_string("Tiempo Valido");
+//	  }
 
 
 	  //KEYPAD FUNC TEST
