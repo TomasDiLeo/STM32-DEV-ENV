@@ -10,6 +10,7 @@ static Key_t key = {
 };
 
 Key_t keypad_read(void){
+	static uint8_t isDebouncing = 0;
 	key.value = 0;
 
 	for(uint8_t row = 0; row < 4; row++){
@@ -24,36 +25,36 @@ Key_t keypad_read(void){
 
 	select_row(0); //RESET ALL ROWS
 
-	if(key.value == 0 && key.value != last_key){
-		key.value = last_key;
-		key.state = KEY_RELEASED;
-
-		last_key = 0;
-		return key;
-	}
-
-	if (key.value == 0 && key.value == last_key){
-		key.state = KEY_NO_READ;
-		return key;
-	}
-
 	if(key.value != last_key){
-		key.state = KEY_PRESSED;
-
-		key_timer = HAL_GetTick();
-		last_key = key.value;
-
-		return key;
-	}
-
-	if(key.value == last_key){
-		if(HAL_GetTick() - key_timer >= 700){
-			key.state = KEY_HELD;
-		} else {
-			key.state = KEY_NO_READ;
+		if(!isDebouncing){
+			key_timer = HAL_GetTick();
+			isDebouncing = 1;
 		}
 
+		if(HAL_GetTick() - key_timer < 20){
+			key.value = last_key;
+			key.state = KEY_NO_READ;
+			return key;
+		}
+
+		if(key.value == 0){
+			key.value = last_key;
+			key.state = KEY_RELEASED;
+			last_key = 0;
+			isDebouncing = 0;
+			return key;
+		}
+
+		key.state = KEY_PRESSED;
+		last_key = key.value;
+		isDebouncing = 0;
 		return key;
+	}
+
+	if(HAL_GetTick() - key_timer >= 700){
+		key.state = KEY_HELD;
+	} else {
+		key.state = KEY_NO_READ;
 	}
 
 	return key;
