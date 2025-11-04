@@ -102,6 +102,11 @@ int main(void)
   lcd_init();
   clock_init(&hrtc);
 
+  Key_t key = {
+		  .value = 0,
+		  .state = KEY_NO_READ
+  };
+  uint32_t timer = 0;
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -110,30 +115,57 @@ int main(void)
   {
 	  HAL_Delay(1); //STABILITY
 
-	  // LCD TEST
+	  // KEYPAD STATES TEST
+
+	  key = keypad_read();
 
 	  lcd_put_cur(0, 0);
-	  lcd_send_data('D');
-	  HAL_Delay(20);
-	  lcd_send_cmd(MOV_DISP_RIGHT);
-	  lcd_send_cmd(MOV_DISP_RIGHT);
-	  HAL_Delay(2);
-	  lcd_send_cmd(MOV_DISP_LEFT);
-	  lcd_send_cmd(MOV_DISP_LEFT);
+	  switch (key.state) {
+		case KEY_PRESSED:
+			timer = HAL_GetTick();
+			sprintf(string_buffer, "%02u  0000   KP", key.value);
+			break;
+		case KEY_RELEASED:
+			lcd_put_cur(1, 0);
+			sprintf(string_buffer, "%02uR %04lu Ms", key.value, HAL_GetTick() - timer);
+			break;
+		case KEY_HELD:
+			sprintf(string_buffer, "%02uH %04lu", key.value, HAL_GetTick() - timer);
+			break;
+		case KEY_NO_READ:
+			if(key.value != 0){
+				sprintf(string_buffer, "%02u  0000", key.value);
+			} else {
+				sprintf(string_buffer, "00  0000        ");
+			}
+			break;
+	}
 
-	  HAL_Delay(20);
+	  lcd_send_string(string_buffer);
+	  // LCD TEST
 
-	  lcd_send_cmd(CUR_ON_BLINK_ON);
-
-	  lcd_send_cmd(MOV_CUR_LEFT);
-	  lcd_send_cmd(MOV_CUR_LEFT);
-	  HAL_Delay(20);
-	  lcd_send_cmd(MOV_CUR_RIGHT);
-	  lcd_send_cmd(MOV_CUR_RIGHT);
-
-	  lcd_send_cmd(CUR_OFF_BLINK_OFF);
-
-	  HAL_Delay(20);
+//	  lcd_put_cur(0, 0);
+//	  lcd_send_data('D');
+//	  HAL_Delay(20);
+//	  lcd_send_cmd(MOV_DISP_RIGHT);
+//	  lcd_send_cmd(MOV_DISP_RIGHT);
+//	  HAL_Delay(2);
+//	  lcd_send_cmd(MOV_DISP_LEFT);
+//	  lcd_send_cmd(MOV_DISP_LEFT);
+//
+//	  HAL_Delay(20);
+//
+//	  lcd_send_cmd(CUR_ON_BLINK_ON);
+//
+//	  lcd_send_cmd(MOV_CUR_LEFT);
+//	  lcd_send_cmd(MOV_CUR_LEFT);
+//	  HAL_Delay(20);
+//	  lcd_send_cmd(MOV_CUR_RIGHT);
+//	  lcd_send_cmd(MOV_CUR_RIGHT);
+//
+//	  lcd_send_cmd(CUR_OFF_BLINK_OFF);
+//
+//	  HAL_Delay(20);
 
 
 	  //CLOCK FUNC TEST
