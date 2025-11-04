@@ -23,6 +23,18 @@
 #define READ_PIN(name) HAL_GPIO_ReadPin(name##_GPIO_Port, name##_Pin)
 #define WRITE_PIN(name, state) HAL_GPIO_WritePin(name##_GPIO_Port, name##_Pin, state)
 
+typedef enum {
+	KEY_PRESSED = 0,
+	KEY_HELD,
+	KEY_RELEASED,
+	KEY_NO_READ
+} Key_State_t;
+
+typedef struct {
+	uint8_t value;
+	Key_State_t state;
+} Key_t;
+
 static const uint8_t keymap[4][4] = {
     { 1,  2,  3, 11},
     { 4,  5,  6, 12},
@@ -30,6 +42,6 @@ static const uint8_t keymap[4][4] = {
     {15, 10, 16, 14}
 };
 
-uint8_t keypad_read(void);
+Key_t keypad_read(void);
 
 #endif /* KEYPAD_H */
