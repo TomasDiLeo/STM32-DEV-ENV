@@ -34,7 +34,7 @@ Key_t keypad_read(void){
 			isDebouncing = 1;
 		}
 
-		if(HAL_GetTick() - debounce_timer < 20){
+		if(HAL_GetTick() - debounce_timer < 10){
 			key.value = last_key;
 			key.state = KEY_NO_READ;
 			return key;
