@@ -2,7 +2,9 @@
 
 static void select_row(uint8_t row);
 
+static uint32_t debounce_timer;
 static uint32_t key_timer;
+
 static uint8_t last_key = 0;
 static Key_t key = {
 		.value = 0,
@@ -26,12 +28,13 @@ Key_t keypad_read(void){
 	select_row(0); //RESET ALL ROWS
 
 	if(key.value != last_key){
+		key_timer = HAL_GetTick();
 		if(!isDebouncing){
-			key_timer = HAL_GetTick();
+			debounce_timer = HAL_GetTick();
 			isDebouncing = 1;
 		}
 
-		if(HAL_GetTick() - key_timer < 20){
+		if(HAL_GetTick() - debounce_timer < 20){
 			key.value = last_key;
 			key.state = KEY_NO_READ;
 			return key;
@@ -51,7 +54,7 @@ Key_t keypad_read(void){
 		return key;
 	}
 
-	if(HAL_GetTick() - key_timer >= 700){
+	if(HAL_GetTick() - key_timer >= HELD_TIME && key.value != 0){
 		key.state = KEY_HELD;
 	} else {
 		key.state = KEY_NO_READ;

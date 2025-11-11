@@ -120,6 +120,7 @@ int main(void)
 	  key = keypad_read();
 
 	  lcd_put_cur(0, 0);
+
 	  switch (key.state) {
 		case KEY_PRESSED:
 			timer = HAL_GetTick();

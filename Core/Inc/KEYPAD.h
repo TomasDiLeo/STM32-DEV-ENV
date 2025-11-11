@@ -20,6 +20,8 @@
 #define COL_4_Pin GPIO_PIN_9
 #define COL_4_GPIO_Port GPIOB
 
+#define HELD_TIME 850
+
 #define READ_PIN(name) HAL_GPIO_ReadPin(name##_GPIO_Port, name##_Pin)
 #define WRITE_PIN(name, state) HAL_GPIO_WritePin(name##_GPIO_Port, name##_Pin, state)
 
